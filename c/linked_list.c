@@ -35,7 +35,7 @@ int valueAt(List *list, int index) {
 }
 
 void pushFront(List *list, int element) {
-    ListNode *newNode = (ListNode *) malloc(sizeof(ListNode *));
+    ListNode *newNode = (ListNode *) malloc(sizeof(ListNode));
     if (NULL == newNode) {
         printf("alloc in pushFront failed");
     }
@@ -64,7 +64,7 @@ void popFront(List *list) {
 
 void pushBack(List *list, int element) 
 {
-    ListNode *newNode = (ListNode *) malloc(sizeof(ListNode *));
+    ListNode *newNode = (ListNode *) malloc(sizeof(ListNode));
     newNode->val = element;
     newNode->next = NULL;
     if (NULL == newNode) {
@@ -118,7 +118,7 @@ int back(List *list)
 void insert(List *list, int index, int value)
 {
     if (index > list->size || index < 0) return;
-    ListNode *newNode = (ListNode *) malloc(sizeof(ListNode *));
+    ListNode *newNode = (ListNode *) malloc(sizeof(ListNode));
     newNode->val = value;
     newNode->next = NULL;
     if (0 == index) {
@@ -205,9 +205,22 @@ void remove_value(List *list,int value)
     }
 }
 
+void freeList(List *list)
+{
+    ListNode *lp = list->head;
+    ListNode *prev = NULL;
+
+    while(NULL != lp) {
+        prev = lp;
+        lp = lp->next;
+        free(prev);
+    }
+}
+
 int main() {
-    List *list = (List *) malloc(sizeof(List *));
-    List *blank = (List *) malloc(sizeof(List *));
+    List *list = (List *) calloc(1, sizeof(List));
+    List *blank = (List *) malloc(sizeof(List));
+
     list->size = 0;
     list->head = NULL;
     blank->size = 0;
@@ -387,4 +400,9 @@ int main() {
     assert(!value_n_from_end(blank, 0));
     erase(blank, 0);
     erase(blank, 1);
+
+    freeList(list);
+
+    free(list);
+    free(blank);
 }
