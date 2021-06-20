@@ -293,10 +293,12 @@ int main() {
     assert(list.valueAt(6) == 3);
     try {
         list.insert(10, 10);
+        assert(1 == 0)
     } catch(...) {}
     assert(list.getSize() == 7);
     try {
         list.insert(-1, 10);
+        assert(1 == 0)
     } catch (...) {}
     assert(list.getSize() == 7);
     list.printList();
