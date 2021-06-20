@@ -62,23 +62,27 @@ public class DynamicArray {
         }
     }
 
+    public static void asserting(boolean assertion) {
+        if (!assertion) throw new RuntimeException();
+    }
+
     public static void main(String[] args) {
         DynamicArray vec = new DynamicArray();
-        assert(vec.isEmpty());
+        asserting(vec.isEmpty());
         for (int i=0; i <= 5; i++) {
             vec.push( i);
         }
 
-        assert(vec.size() == 6);
-        assert(vec.at( 0) == 0);
-        assert(vec.at( 1) == 1);
-        assert(vec.at( 2) == 2);
-        assert(vec.at( 3) == 3);
-        assert(vec.at( 4) == 4);
-        assert(vec.at( 5) == 5);
+        asserting(vec.size() == 6);
+        asserting(vec.at( 0) == 0);
+        asserting(vec.at( 1) == 1);
+        asserting(vec.at( 2) == 2);
+        asserting(vec.at( 3) == 3);
+        asserting(vec.at( 4) == 4);
+        asserting(vec.at( 5) == 5);
         vec.pop();
         vec.pop();
-        assert(vec.size() == 4);
+        asserting(vec.size() == 4);
         vec.print_vec();
         vec.prepend( -2);
         vec.print_vec();
@@ -86,10 +90,10 @@ public class DynamicArray {
         vec.print_vec();
         vec.delete( 2);
         vec.print_vec();
-        assert(vec.at( 0) == -2);
-        assert(vec.at( 1) == -1);
-        assert(vec.at( 2) == 1);
-        assert(vec.size() == 5);
+        asserting(vec.at( 0) == -2);
+        asserting(vec.at( 1) == -1);
+        asserting(vec.at( 2) == 1);
+        asserting(vec.size() == 5);
         vec.push( 14);
         vec.push( 15);
         vec.push( 14);
@@ -101,20 +105,20 @@ public class DynamicArray {
         vec.push( 15);
         vec.push( 14);
         vec.push( 15);
-        assert(vec.size() == 16);
+        asserting(vec.size() == 16);
         vec.print_vec();
         vec.remove(14);
         vec.print_vec();
-        assert(vec.size() == 10);
-        assert(vec.find( 15) == 5);
-        assert(vec.find( 20) == -1);
+        asserting(vec.size() == 10);
+        asserting(vec.find( 15) == 5);
+        asserting(vec.find( 20) == -1);
         vec.delete(0);
         vec.delete(0);
         vec.delete(0);
         vec.delete(0);
         vec.delete(0);
         vec.print_vec();
-        assert(vec.size() == 5);
+        asserting(vec.size() == 5);
     }
 
     
