@@ -13,12 +13,14 @@ unsigned int hash(char *key, int capacity) {
 
 int exists(HashTable *table, char *key) {
     unsigned int hashval = hash(key, table->capacity);
-    while (table->arr[hashval].valid)  {
+    int iterations = 0;
+    while (table->arr[hashval].valid && iterations <= table->capacity)  {
         if (!table->arr[hashval].tombstone) {
             if (strcmp(table->arr[hashval].key, key) == 0) {
                 return 1;
             }
         }
+        iterations++;
         hashval = (hashval + 1) % table->capacity;
     }
     return 0;
@@ -27,13 +29,20 @@ int exists(HashTable *table, char *key) {
 void add(HashTable **table, char *key, char *value) {
     unsigned int hashval = hash(key, (*table)->capacity);
     // navigate to an empty space, but if the keys match or if we get to a tombstone, we want to update that value
-
-    while ((*table)->arr[hashval].valid)  {
-        if (strcmp((*table)->arr[hashval].key, key) == 0 || (*table)->arr[hashval].tombstone) break;
-        hashval = (hashval + 1) % (*table)->capacity;
+    if (exists(*table, key)) {
+        while ((*table)->arr[hashval].valid)  {
+            if (strcmp((*table)->arr[hashval].key, key) == 0) break;
+            hashval = (hashval + 1) % (*table)->capacity;
+        }
+    } else {
+        while ((*table)->arr[hashval].valid)  {
+            if (strcmp((*table)->arr[hashval].key, key) == 0 || (*table)->arr[hashval].tombstone) break;
+            hashval = (hashval + 1) % (*table)->capacity;
+        }
     }
-    if (!((*table)->arr[hashval].valid && strcmp((*table)->arr[hashval].key, key) == 0)) {
-        // not updating key
+
+    if (!((*table)->arr[hashval].valid && !(*table)->arr[hashval].tombstone && strcmp((*table)->arr[hashval].key, key) == 0)) {
+        // not updating key if value already existed
         (*table)->size++;
     }
     Bucket bucket;
@@ -89,7 +98,6 @@ void resize_table(HashTable **table, int up) {
     for (i = 0; i < (*table)->capacity; i++) {
         if ((*table)->arr[i].valid && !(*table)->arr[i].tombstone) {
             add(&newTable, (*table)->arr[i].key, (*table)->arr[i].value);
-            
         }
     }
     free((*table)->arr);
@@ -165,11 +173,17 @@ int main() {
     add(&table, "6", "six");
     add(&table, "7", "seven");
     add(&table, "8", "eight");
+    assert(exists(table, "3"));
+    assert(exists(table, "5"));
+    assert(!exists(table, "9"));
     assert(table->size == 7);
     assert(table->capacity == 8);
     add(&table, "9", "nine");
     assert(table->size == 8);
     assert(table->capacity == 16);
+    assert(!exists(table, "1"));
+    assert(exists(table, "5"));
+    assert(exists(table, "9"));
 
     print_table(table);
 
@@ -187,4 +201,23 @@ int main() {
 
     free(table->arr);
     free(table);
+
+    HashTable *table2 = (HashTable *) malloc(sizeof(HashTable));
+    table2->size = 0;
+    table2->capacity = 8;
+    table2->arr = (Bucket *) calloc(8, sizeof(Bucket));
+    add(&table, "one", "one");
+    add(&table, "noe", "two");
+    add(&table, "eon", "three");
+    assert(table->size == 3);
+    print_table(table);
+
+    remove_elem(&table, "noe");
+    assert(table->size == 2);
+    assert(exists(table, "eon"));
+    add(&table, "eon", "four");
+    print_table(table);
+    assert(table->size == 2);
+    assert(strcmp(get(table, "eon"), "four") == 0);
+    assert(!exists(table, "noe"));
 }
