@@ -152,6 +152,7 @@ int main() {
 
 
     remove_elem(&table, "1");
+    assert(!exists(table, "1"));
     assert(strcmp(get(table, "1"), "") == 0);
     assert(strcmp(get(table, "2"), "two") == 0);
     assert(strcmp(get(table, "3"), "three") == 0);
