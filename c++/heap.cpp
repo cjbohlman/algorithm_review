@@ -129,7 +129,7 @@ void Heap::heap_sort() {
     int end = size;
     while(size > 1) {
         auto temp = arr.at(1);
-        arr.at(1) = arr.at(temp);
+        arr.at(1) = arr.at(end);
         arr.at(end) = temp;
         end--;
         size--;
