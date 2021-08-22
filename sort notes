@@ -1,0 +1,78 @@
+Insertion sort
+Start with empty list S and unsorted list I of n items
+for each item x in I
+    insert x into S in sorted order
+If S is linked list: O n worst case time to find right position
+If S is an array, O(logn) worst case time to find element (binary search), but O(n) time to shift items over
+In place sort if S is an array, just use the same array for both
+    In place sort: little extra memory needed to sort
+Linear sort if it's already sorted
+
+if S is a balanced search tree, running time = O(nlogn)
+
+Selection sort
+Quadratic time
+Empty list S and unsorted list I:
+for i = 0; i < n; i++:
+    x = item in I with smallest key
+    remove from I
+    append to S
+In place sort
+
+Replace I with heap in selection sort?
+This is a heapsort: O(nlogn)
+in place algorithm
+Excellent for arrays, clumbsy for linked lists
+
+Merge sort:
+O(nlogn)
+Good for linked lists, weird for arrays
+Merge 2 sorted lists into one sorted list in linear time
+Use two queues and merge the smaller number first
+Divide and conquer algorithm
+
+start with unsorted list of n items
+break into havles: I1 and I2
+sort I1 recursively, yielding s1
+sort i2 recursively, yield s2
+combine linearly into S
+number of levels is 1 + log2n
+O(n) running time per level, so Onlogn time
+Not an in place sort for arrays
+
+Quick sort:
+recursive divide and conquer algorithm
+Fastest known comparison based sort for arrays
+worst case: O(n^2), usually O(nlogn)
+
+start with list I of n items
+Choose pivot item v from I
+Partition I into 2 unsorted lists I1 and I2
+I1: All keys smaller than v's key
+I2: All keys lartger than v's key
+items with same key can go into either list
+v does not go into either list
+
+Sort I1 recursively, yielding s1
+Sort I2 recursively, yielding s2
+concatenate s1, v, and s2, yielding s
+
+Lomuto partition scheme: choosing the last element
+Hoare partition scheme: choosing the middle index
+randomly choosing a pivot works okay 
+better: choose 3 random pivots and pick the middle one
+
+For linked lists, better partition I into 3 lists: I1, I2, and Iv
+Sort I1 and I2
+
+For arrays, in place is fast
+
+Countintg sort: sort items into buckets for each possible key
+
+Bucket sort: Distrbution algorithm that distributes elements into a number of nuckeys, and then sorts those buckets individually
+
+Radix sort: A bucket sort that uses the radix (base), sorting from msb to lsb 
+Less passes if we sort on two digits at a time, or even three
+But you need more queues
+q = # of uckets = radix of digit we use as sort key
+
