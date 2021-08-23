@@ -11,7 +11,7 @@ struct ChrisVec {
 typedef struct ChrisVec ChrisVec;
 
 
-int * chris_realloc(ChrisVec *vec, int new_capacity) {
+int * realloc_dyn_arr(ChrisVec *vec, int new_capacity) {
 	int *new_nums = (int *) malloc(sizeof(int) * new_capacity);
 	if (new_nums == NULL) {
 		exit(1);
@@ -24,8 +24,8 @@ int * chris_realloc(ChrisVec *vec, int new_capacity) {
 }
 
 static void resize(ChrisVec *vec, int new_capacity) {
-	// int *temp_ptr = (int *) realloc(vec->nums, new_capacity*sizeof(*vec->nums));
-	int *temp_ptr = chris_realloc(vec, new_capacity);
+	// int *temp_ptr = (int *) realloc_dyn_arr(vec->nums, new_capacity*sizeof(*vec->nums));
+	int *temp_ptr = realloc_dyn_arr(vec, new_capacity);
 	if (temp_ptr == NULL) {
 		free(vec);
 		exit(1);
@@ -123,61 +123,4 @@ void print_vec(ChrisVec *vec) {
 	for (i = 0; i < vec->size;i++) {
 		printf("Pointer arithmetic: %d, Array acces: %d\n", *(vec->nums + i), vec->nums[i]);
 	}
-}
-
-
-int main() {
-	ChrisVec *vec = (ChrisVec *) malloc(sizeof(ChrisVec));
-	if (vec == NULL) {
-		exit(1);
-	}
-	vec->nums = malloc(sizeof(*vec->nums)*16);
-	vec->size = 0;
-	vec->capacity = 16;
-	assert(is_empty(vec));
-	int i;
-	for (i=0; i <= 5; i++) {
-		push(vec, i);
-	}
-
-	assert(vec->size == 6);
-	assert(vec->capacity == 16);
-	assert(at(vec, 0) == 0);
-	assert(at(vec, 1) == 1);
-	assert(at(vec, 2) == 2);
-	assert(at(vec, 3) == 3);
-	assert(at(vec, 4) == 4);
-	assert(at(vec, 5) == 5);
-	pop(vec);
-	pop(vec);
-	assert(vec->size == 4);
-	print_vec(vec);
-	prepend(vec, -2);
-	insert(vec, 1, -1);
-	print_vec(vec);
-	delete_element(vec, 2);
-	assert(at(vec, 0) == -2);
-	assert(at(vec, 1) == -1);
-	assert(at(vec, 2) == 1);
-	assert(vec->size == 5);
-	push(vec, 14);
-	push(vec, 15);
-	push(vec, 14);
-	push(vec, 15);
-	push(vec, 14);
-	push(vec, 14);
-	push(vec, 15);
-	push(vec, 14);
-	push(vec, 15);
-	push(vec, 14);
-	push(vec, 15);
-	assert(vec->size == 16);
-	assert(vec->capacity == 32);
-	remove_element(vec, 14);
-	print_vec(vec);
-	assert(vec->size == 10);
-	assert(find(vec, 15) == 5);
-	assert(find(vec, 20) == -1);
-	free(vec->nums);
-	free(vec);
 }
