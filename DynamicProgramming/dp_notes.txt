@@ -1,0 +1,19 @@
+Dynamic Programming Notes:
+
+Memoization
+    1. Make it work
+        visiualize problem as a tree
+        implement tree using recursion
+    2. Make it efficient
+        add a memoization object
+        add a base case to return memoization values
+        store return values in the memoization object
+        Examine the recursion tree to see if there is duplicate work anywhere
+
+Tabulation
+    1. Visualize problem as a table
+    2. Size of the tabke is based on the inputs
+    3. Initialize the table with default values
+    4. Seed the trivial answer into the table
+    5. Iterate through the table
+    6. Fill further positions based on the current position
